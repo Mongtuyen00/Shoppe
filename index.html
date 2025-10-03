@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Tạo Link Affiliate Shopee</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    input, button {
+      padding: 10px;
+      margin-top: 10px;
+      width: 100%;
+      font-size: 16px;
+    }
+    button {
+      background: #ee4d2d;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #d94424;
+    }
+    #result {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <h2>🔗 Tạo Link Affiliate Shopee</h2>
+  <p>Nhập link sản phẩm (gốc hoặc rút gọn) để tạo link affiliate</p>
+
+  <input type="text" id="inputLink" placeholder="Ví dụ: https://shopee.vn/product/... hoặc https://s.shopee.vn/...">
+  <button onclick="generateAffiliate()">Tạo link Affiliate</button>
+
+  <div id="result"></div>
+
+  <script>
+    async function generateAffiliate() {
+      const productUrl = document.getElementById("inputLink").value.trim();
+      if (!productUrl) {
+        alert("❌ Vui lòng nhập link sản phẩm Shopee!");
+        return;
+      }
+
+      const apiUrl = `/api/convert?url=${encodeURIComponent(productUrl)}`;
+
+      try {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+
+        if (data.affiliate) {
+          document.getElementById("result").innerHTML =
+            `✅ Link Affiliate:<br><a href="${data.affiliate}" target="_blank">${data.affiliate}</a>`;
+        } else {
+          document.getElementById("result").innerHTML = "❌ Không tạo được link affiliate";
+        }
+      } catch (err) {
+        document.getElementById("result").innerHTML = "⚠️ Lỗi kết nối API";
+      }
+    }
+  </script>
+</body>
+</html>
